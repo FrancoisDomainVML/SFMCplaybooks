@@ -1,13 +1,13 @@
-name: Generate Playbook PPTXs
+name: Generate Playbook PPTXs and PDFs
 
 on:
   push:
     branches: [main]
     paths:
-      - "content/**.yaml"
-      - "scripts/generate_pptx.js"
+      - "content/**.yaml"        # Only runs when a YAML file changes
+      - "scripts/generate_pptx.js"  # Or when the generator itself changes
 
-  workflow_dispatch:
+  workflow_dispatch:             # Allow manual trigger from GitHub UI
 
 permissions:
   contents: write
@@ -32,10 +32,20 @@ jobs:
       - name: Regenerate all playbooks
         run: node scripts/generate_pptx.js content/
 
-      - name: Commit generated PPTXs back to repo
+      - name: Install LibreOffice for PDF conversion
+        run: sudo apt-get update && sudo apt-get install -y libreoffice
+
+      - name: Convert PPTX to PDF
+        run: |
+          cd output
+          for file in *.pptx; do
+            libreoffice --headless --convert-to pdf "$file"
+          done
+
+      - name: Commit generated PPTXs and PDFs back to repo
         uses: stefanzweifel/git-auto-commit-action@v7
         with:
-          commit_message: "chore: regenerate playbook PPTXs [skip ci]"
-          file_pattern: "output/*.pptx"
+          commit_message: "chore: regenerate playbook PPTXs and PDFs [skip ci]"
+          file_pattern: "output/*"
           commit_user_name: "github-actions[bot]"
           commit_user_email: "github-actions[bot]@users.noreply.github.com"
