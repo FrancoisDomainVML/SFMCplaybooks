@@ -1,0 +1,190 @@
+meta:
+  title: "SFMC SMS Playbook"
+  subtitle: "Salesforce Marketing Cloud SMS planning, execution, compliance, and reporting"
+  version: "1.0"
+  last_updated: "2026-06-24"
+  owner: "Digital Marketing Ops"
+  contact: "sms-ops@company.com"
+
+slides:
+  - type: title
+    title: "SFMC SMS Playbook"
+    subtitle: "Planning, building, and operating SMS campaigns in Salesforce Marketing Cloud"
+    notes: "Use this playbook for all SMS campaigns, including promotional, transactional, and service messages."
+
+  - type: section
+    heading: "Phase 1: Plan & Comply"
+    subheading: "Secure permissions, select channels, and reduce risk"
+
+  - type: content
+    title: "Step 1 — Confirm audience permission"
+    bullets:
+      - "Verify SMS consent for every recipient before sending"
+      - "Document opt-in source, date, and the terms shown at sign-up"
+      - "Honor local regulations: TCPA, CTIA, CASL, GDPR, and other region-specific rules"
+      - "Ensure opt-out language and HELP instructions are included in every message"
+    notes: "SMS requires explicit opt-in. Do not send to numbers without a valid subscription path."
+
+  - type: content
+    title: "Step 2 — Classify the message type"
+    bullets:
+      - "Promotional: offers, marketing, and general engagement"
+      - "Transactional: account alerts, delivery updates, payment reminders"
+      - "Service: appointment reminders, support notifications, system status"
+      - "Choose the correct send classification and Journey Builder SMS activity"
+    notes: "Message type drives approval, content rules, and allowable send windows."
+
+  - type: content
+    title: "Step 3 — Set delivery rules"
+    bullets:
+      - "Respect quiet hours and local time zone restrictions"
+      - "Limit message frequency by campaign and recipient"
+      - "Use suppression lists for DNC, unsubscribed, invalid numbers, and do-not-contact groups"
+      - "Define fallback plans for invalid numbers and blocked carriers"
+    notes: "SMS timing and frequency are critical for compliance and customer experience."
+
+  - type: section
+    heading: "Phase 2: Build & Test"
+    subheading: "Prepare MobileConnect, data, and approvals"
+
+  - type: content
+    title: "Step 4 — Configure MobileConnect"
+    bullets:
+      - "Provision the correct sender code: short code, long code, or Toll-Free SMS"
+      - "Set up keywords, auto-replies, and confirmation messages"
+      - "Use the correct sender profile and send classification for this campaign"
+      - "Confirm the message template uses approved branding and compliant copy"
+    notes: "MobileConnect configuration should match the campaign goal and regulatory requirements."
+
+  - type: content
+    title: "Step 5 — Prepare subscriber data"
+    bullets:
+      - "Build clean Data Extensions with mobile number, country code, opt-in status, and consent metadata"
+      - "Include personalization fields only when source data is verified"
+      - "Segment recipients by eligibility, language, and engagement signals"
+      - "Run validation queries to remove duplicates, invalid formats, and unsubscribes"
+    notes: "Accurate data avoids carrier rejections and improves deliverability."
+
+  - type: content
+    title: "Step 6 — Test end-to-end"
+    bullets:
+      - "Send test messages to seed and QA devices across carriers and regions"
+      - "Verify opt-out replies (STOP, HELP) and inbound keyword handling"
+      - "Confirm dynamic content, personalization, and URL shortening render correctly"
+      - "Review tracking links, campaign names, and message truncation in preview"
+    notes: "SMS tests must include both content and system flow validation before production."
+
+  - type: process
+    title: "SMS Build & Approval Flow"
+    steps:
+      - label: "Define objective"
+        description: "Agree on campaign goal and audience"
+      - label: "Configure MobileConnect"
+        description: "Set sender code, keyword, and auto-reply"
+      - label: "Validate data"
+        description: "Clean recipients and confirm opt-ins"
+      - label: "QA send"
+        description: "Test across carriers and check message formatting"
+      - label: "Approve & schedule"
+        description: "Secure stakeholder sign-off and set send time"
+
+  - type: section
+    heading: "Journey Builder SMS Handling"
+    subheading: "Broadcast, user-initiated, and platform-initiated message flows"
+
+  - type: content
+    title: "Broadcast messages in Journey Builder"
+    bullets:
+      - "Use Journey Builder SMS activities for large scheduled sends and audience-based campaign broadcasts"
+      - "Select the correct entry source: DE, list, filter, or API event for broadcast audiences"
+      - "Apply send classification, suppression, and quiet hour guardrails before launch"
+      - "Use throttling or journey splits to limit velocity for high-volume SMS broadcasts"
+    notes: "Broadcast sends should be designed as one-way campaigns with strong opt-in validation and carrier-safe volume management."
+
+  - type: content
+    title: "Two-way SMS — user-initiated flows"
+    bullets:
+      - "Configure MobileConnect keywords and auto-replies for inbound customer requests"
+      - "Route inbound replies into a conversational journey or support workflow"
+      - "Capture the first message content, subscriber context, and intent for follow-up"
+      - "Ensure STOP, HELP, and unsubscribe keywords are handled automatically and immediately"
+    notes: "User-initiated two-way messaging begins with the subscriber reaching out; the system must treat these flows as inbound engagements, not outbound broadcasts."
+
+  - type: content
+    title: "Two-way SMS — platform-initiated flows"
+    bullets:
+      - "Use Journey Builder triggered sends to follow up on system events, abandoned carts, or service updates"
+      - "Design replies to be expected, with clear instructions on how to continue or opt out"
+      - "Connect platform-initiated outbound sends to inbound keyword paths when a response is required"
+      - "Track conversation state so follow-up messages are only sent when appropriate"
+    notes: "Platform-initiated two-way campaigns are outbound first, but they must preserve the option for a seamless inbound response."
+
+  - type: section
+    heading: "Phase 3: Send & Monitor"
+    subheading: "Execute the campaign and watch delivery metrics"
+
+  - type: content
+    title: "Step 7 — Execute the send"
+    bullets:
+      - "Schedule the send during acceptable local hours"
+      - "Confirm the final send window, throttling, and retry settings"
+      - "Ensure MobileConnect send classification and suppression list are active"
+      - "Monitor the initial send volume and delivery confirmations"
+    notes: "A controlled send launch reduces the risk of mass failures or compliance issues."
+
+  - type: content
+    title: "Step 8 — Monitor delivery and health"
+    bullets:
+      - "Track delivery, undelivered, and blocked message counts"
+      - "Review carrier response codes and rejection reasons"
+      - "Watch for spike in opt-outs, keywords, or abuse complaints"
+      - "Escalate immediately if major rejection or delivery failure occurs"
+    notes: "Use SFMC tracking and MobileConnect health dashboards to spot issues quickly."
+
+  - type: content
+    title: "Step 9 — Manage replies"
+    bullets:
+      - "Capture inbound responses in MobileConnect and route them to Customer Service"
+      - "Process STOP, UNSUBSCRIBE, and HELP replies automatically"
+      - "Review and action any support or keyword-driven responses"
+      - "Update CRM or marketing databases with reply status as needed"
+    notes: "Inbound response handling is part of the campaign experience and compliance footprint."
+
+  - type: section
+    heading: "Phase 4: Report & Improve"
+    subheading: "Review performance, compliance, and campaign learnings"
+
+  - type: content
+    title: "Step 10 — Analyze results"
+    bullets:
+      - "Measure delivered, clicked, replied, and opt-out rates"
+      - "Compare actual send volume to expected reach and engagement"
+      - "Identify carriers or segments with high failure rates"
+      - "Document lessons learned and update the SMS playbook"
+    notes: "Post-campaign review ensures future SMS sends are safer and more effective."
+
+  - type: table
+    title: "SMS Roles & Responsibilities"
+    headers: ["Role", "Responsibility", "Owner"]
+    rows:
+      - ["Campaign Manager", "Approves message content, audience, and timing", "Marketing Ops"]
+      - ["SMS Operations", "Configures MobileConnect and executes the send", "Delivery Team"]
+      - ["Legal / Compliance", "Validates opt-in, messaging, and regulatory requirements", "Compliance Team"]
+      - ["Analytics", "Monitors delivery, reporting, and campaign ROI", "Insights Team"]
+      - ["Support", "Handles inbound replies and keyword requests", "Customer Service"]
+    notes: "Roles may overlap for smaller teams, but each area needs clear ownership."
+
+  - type: contact
+    title: "Key Contacts & Resources"
+    contacts:
+      - role: "SMS Campaign Owner"
+        detail: "sms-ops@company.com"
+      - role: "MobileConnect Support"
+        detail: "SFMC MobileConnect admin or support team"
+      - role: "Compliance Review"
+        detail: "legal-compliance@company.com"
+      - role: "Opt-Out Handling"
+        detail: "stoprequest@company.com"
+      - role: "SMS Playbook"
+        detail: "SharePoint / internal docs for SMS standards"
+    notes: "Update this slide whenever ownership or contact info changes."
