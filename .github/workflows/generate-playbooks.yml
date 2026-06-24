@@ -15,12 +15,12 @@ jobs:
 
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v4.2.0
+        uses: actions/checkout@v4.6.0
 
       - name: Set up Node.js
-        uses: actions/setup-node@v4.1.0
+        uses: actions/setup-node@v4.2.0
         with:
-          node-version: "22"  # was "20"
+          node-version: "22"
           cache: "npm"
 
       - name: Install dependencies
@@ -30,7 +30,7 @@ jobs:
         run: node scripts/generate_pptx.js content/
 
       - name: Commit generated PPTXs back to repo
-        uses: stefanzweifel/git-auto-commit-action@v6
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore: regenerate playbook PPTXs [skip ci]"
           file_pattern: "output/*.pptx"
