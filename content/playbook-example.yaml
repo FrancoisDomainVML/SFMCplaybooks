@@ -1,0 +1,109 @@
+meta:
+  title: "Incident Response Playbook"
+  subtitle: "How we detect, respond to, and learn from incidents"
+  version: "1.0"
+  last_updated: "2026-06-24"
+  owner: "Platform Engineering"
+  contact: "platform-eng@company.com"
+
+slides:
+  - type: title
+    title: "Incident Response Playbook"
+    subtitle: "How we detect, respond to, and learn from incidents"
+    notes: "Welcome attendees. This playbook is owned by Platform Engineering."
+
+  - type: section
+    heading: "Phase 1: Detection & Triage"
+    subheading: "Recognising and classifying the incident"
+
+  - type: content
+    title: "Step 1 — Detect the Incident"
+    bullets:
+      - "Monitor alerts in PagerDuty and check #incidents Slack channel"
+      - "Confirm the incident is real (rule out false positives)"
+      - "Assign an Incident Commander (IC) immediately"
+      - "Open a War Room in Slack: /incident open <name>"
+    notes: "The IC is the single point of coordination. They do not fix the issue — they manage the process."
+
+  - type: content
+    title: "Step 2 — Classify Severity"
+    bullets:
+      - "P1 — Critical: full service outage, data breach risk → page on-call team now"
+      - "P2 — High: major feature broken, significant user impact → respond within 15 min"
+      - "P3 — Medium: degraded performance, workaround exists → respond within 2 hours"
+      - "P4 — Low: minor issue, no user impact → schedule fix in next sprint"
+    notes: "When in doubt, escalate to a higher severity. It's easier to downgrade than to under-respond to a P1."
+
+  - type: process
+    title: "Triage Decision Flow"
+    steps:
+      - label: "Alert Fires"
+        description: "PagerDuty or monitoring tool triggers"
+      - label: "Confirm Real?"
+        description: "Is this a genuine incident or false positive?"
+      - label: "Assign IC"
+        description: "Incident Commander takes ownership"
+      - label: "Set Severity"
+        description: "P1 through P4 based on impact"
+      - label: "Open War Room"
+        description: "Slack channel + bridge call if P1/P2"
+
+  - type: section
+    heading: "Phase 2: Response"
+    subheading: "Containing and resolving the incident"
+
+  - type: content
+    title: "Step 3 — Contain & Communicate"
+    bullets:
+      - "Post initial update in War Room within 10 minutes of IC assignment"
+      - "Notify stakeholders via #status-updates for P1/P2"
+      - "Update external status page if customer-facing impact"
+      - "Limit blast radius: roll back, feature flag off, or isolate component"
+    notes: "Communication cadence: every 30 min for P1, every hour for P2."
+
+  - type: content
+    title: "Step 4 — Resolve & Verify"
+    bullets:
+      - "Deploy fix or rollback to last known good state"
+      - "Verify resolution with monitoring dashboards"
+      - "Confirm with affected teams before declaring resolved"
+      - "Post resolution message in War Room and #status-updates"
+    notes: "Do not declare resolved until metrics confirm normal. Premature resolution is a common trap."
+
+  - type: table
+    title: "Roles & Responsibilities"
+    headers: ["Role", "Responsibility", "Escalation Path"]
+    rows:
+      - ["Incident Commander (IC)", "Overall coordination and decisions", "Engineering Lead"]
+      - ["Tech Lead", "Leads technical investigation and fix", "CTO on-call"]
+      - ["Comms Lead", "Manages stakeholder updates", "VP Engineering"]
+      - ["Scribe", "Documents timeline in real time", "IC"]
+    notes: "For P3/P4, the IC and Tech Lead can be the same person."
+
+  - type: section
+    heading: "Phase 3: Post-Incident"
+    subheading: "Learning and improving"
+
+  - type: content
+    title: "Step 5 — Post-Incident Review (PIR)"
+    bullets:
+      - "Schedule PIR within 48 hours of resolution (not 2 weeks later)"
+      - "Use blameless format: focus on systems and processes, not people"
+      - "Document: timeline, root cause, contributing factors, action items"
+      - "Share PIR document with Engineering and relevant stakeholders"
+    notes: "PIR template is in Confluence: /confluence/PIR-template"
+
+  - type: contact
+    title: "Key Contacts & Resources"
+    contacts:
+      - role: "On-Call Rota"
+        detail: "PagerDuty — platform team schedule"
+      - role: "War Room Slack Command"
+        detail: "/incident open <name>"
+      - role: "Status Page"
+        detail: "status.company.com"
+      - role: "PIR Template"
+        detail: "Confluence: /docs/PIR-template"
+      - role: "Playbook Owner"
+        detail: "platform-eng@company.com"
+    notes: "For emergencies outside working hours, escalate via PagerDuty P1 policy."

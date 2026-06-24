@@ -1,0 +1,38 @@
+name: Generate Playbook PPTXs
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - "content/**.yaml"        # Only runs when a YAML file changes
+      - "scripts/generate_pptx.js"  # Or when the generator itself changes
+
+  workflow_dispatch:             # Allow manual trigger from GitHub UI
+
+jobs:
+  generate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Regenerate all playbooks
+        run: node scripts/generate_pptx.js content/
+
+      - name: Commit generated PPTXs back to repo
+        uses: stefanzweifel/git-auto-commit-action@v5
+        with:
+          commit_message: "chore: regenerate playbook PPTXs [skip ci]"
+          file_pattern: "output/*.pptx"
+          commit_user_name: "github-actions[bot]"
+          commit_user_email: "github-actions[bot]@users.noreply.github.com"

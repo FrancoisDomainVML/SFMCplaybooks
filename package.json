@@ -1,0 +1,13 @@
+{
+  "name": "playbooks",
+  "version": "1.0.0",
+  "description": "YAML-driven playbook generator — produces .pptx from content files",
+  "scripts": {
+    "generate": "node scripts/generate_pptx.js content/",
+    "generate:one": "node scripts/generate_pptx.js"
+  },
+  "dependencies": {
+    "js-yaml": "^4.1.0",
+    "pptxgenjs": "^3.12.0"
+  }
+}
